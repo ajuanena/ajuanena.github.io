@@ -1,0 +1,2 @@
+# ikasegoera_tekno
+ 
