@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulación educativa de phishing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      color: white;
+    }
+
+    .container {
+      width: 350px;
+      padding: 40px 30px;
+      border-radius: 12px;
+      background: #121212;
+      box-shadow: 0 0 30px rgba(255,255,255,0.05);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .logo span:first-child { color: #25F4EE; }
+    .logo span:last-child { color: #FE2C55; }
+
+    .input-group { margin-bottom: 18px; }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 8px;
+      border: none;
+      background: #2f2f2f;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input::placeholder { color: #aaa; }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #FE2C55;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover { opacity: 0.9; }
+
+    .extra {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .extra a { color: #25F4EE; text-decoration: none; }
+
+    .error {
+      color: #FE2C55;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Pantalla educativa */
+    .warning-screen {
+      display: none;
+      text-align: center;
+      max-width: 500px;
+      padding: 40px;
+      border-radius: 12px;
+      background: #121212;
+      box-shadow: 0 0 30px rgba(255,255,255,0.05);
+    }
+
+    .warning-screen h1 {
+      color: #FE2C55;
+      margin-bottom: 20px;
+    }
+
+    .warning-screen img {
+      width: 150px;
+      margin: 20px 0;
+    }
+
+    .warning-screen p {
+      color: #ddd;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="container" id="loginContainer">
+    <div class="logo">
+      <span>Tik</span><span>Tok</span>
+    </div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Usuario" required />
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Contraseña" required />
+      </div>
+
+      <button type="submit">Iniciar sesión</button>
+      <div class="error" id="errorMsg">Usuario o contraseña incorrectos</div>
+    </form>
+
+    <div class="extra">
+      ¿No tienes cuenta? <a href="#">Regístrate</a>
+    </div>
+  </div>
+
+  <!-- PANTALLA EDUCATIVA -->
+  <div class="warning-screen" id="warningScreen">
+    <h1>⚠️ Simulación de phishing</h1>
+
+    <img src="https://cdn-icons-png.flaticon.com/512/565/565547.png" alt="Alerta seguridad">
+
+    <p>
+      Esta era una <strong>simulación educativa</strong>.
+      <br><br>
+      En un ataque real de phishing, tus credenciales podrían haber sido robadas.
+      Nunca introduzcas tu usuario y contraseña en sitios sospechosos.
+    </p>
+
+    <br>
+
+    <p style="font-size:14px;color:#aaa;">
+      ✔ Comprueba la URL del sitio<br>
+      ✔ No compartas contraseñas<br>
+      ✔ Activa verificación en dos pasos
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const loginContainer = document.getElementById('loginContainer');
+    const warningScreen = document.getElementById('warningScreen');
+
+    // contador de intentos por usuario
+    let intentos = {};
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const user = document.getElementById('username').value;
+
+      if (!intentos[user]) {
+        intentos[user] = 1;
+      } else {
+        intentos[user]++;
+      }
+
+      // Primer intento -> error
+      if (intentos[user] === 1) {
+        errorMsg.style.display = 'block';
+      }
+      
+      // Segundo intento -> mostrar pantalla educativa
+      else if (intentos[user] >= 2) {
+        loginContainer.style.display = 'none';
+        warningScreen.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
